@@ -90,7 +90,6 @@ footer.bottom a:hover{color:var(--bright)}
   </div>
   <nav class="top-nav">
     <a href="#how">How it works</a>
-    <a href="#pricing">Pricing</a>
     <a href="#install">Install</a>
     <a href="https://github.com/sjgant80-hub/fallcore">GitHub</a>
   </nav>
@@ -105,7 +104,7 @@ footer.bottom a:hover{color:var(--bright)}
   </h1>
   <p class="lead">
     The on-prem brain that learns from your work. <strong>Anthropic-API-compatible local proxy</strong> + RAG + LoRA fine-tune loop.
-    Burn £100k/yr on tokens today? In 3 years, your AI bill is <strong>5% of that</strong> — and the model is yours.
+    Burn frontier tokens today? In 12 months, most of those calls answer locally — and the model that ships at year 3 is <strong>yours</strong>, trained on your work.
   </p>
   <div class="ctas">
     <a class="btn" href="#install">Install on your infra</a>
@@ -150,7 +149,7 @@ footer.bottom a:hover{color:var(--bright)}
   <div class="flow">
     <div class="step-num">7</div>
     <div class="step-body"><strong>Frontier ratio drops</strong><span>Month 1: 25% frontier · Month 6: 8% · Month 12: 3%</span></div>
-    <div class="step-result">£ collapses</div>
+    <div class="step-result">frontier spend collapses</div>
   </div>
 </section>
 
@@ -173,68 +172,62 @@ footer.bottom a:hover{color:var(--bright)}
   </table>
 </section>
 
-<section id="pricing">
-  <h2><span class="sub">pricing</span>Four tiers. The customer chooses how much sovereignty.</h2>
-  <p class="lead">Every tier is an Anthropic-API-compatible drop-in. Pick based on hardware preference and required compliance posture. Yearly billing, no per-token charges.</p>
+<section id="tiers">
+  <h2><span class="sub">tiers</span>Pick by hardware. Free trial. Always.</h2>
+  <p class="lead">Tier = which model you're running. Lite for laptops and small teams. Pro for departmental GPUs. Sovereign for regulated industries running their own hardware. No paywall — open source, MIT.</p>
   <div class="grid grid-3" style="margin-top:30px">
 
     <div class="card">
       <h3><span class="glyph">·</span>Lite</h3>
-      <p>For teams running £20-50k/yr on Anthropic. We host on dedicated single-tenant GPU. ~40% savings.</p>
-      <div class="price">£297<span class="per">/mo</span></div>
+      <p>For laptops and small teams. Runs on consumer GPUs (or CPU only at low volume).</p>
       <ul>
-        <li>Llama-3.1-8B (single GPU)</li>
-        <li>We host · dedicated GPU</li>
+        <li>Llama-3.1-8B</li>
+        <li>8GB VRAM</li>
         <li>RAG over your docs</li>
-        <li>Monthly fine-tune</li>
-        <li>~40% frontier savings</li>
+        <li>Monthly fine-tune cadence</li>
+        <li>~40% frontier-call reduction</li>
       </ul>
     </div>
 
     <div class="card featured">
       <h3><span class="glyph">◊</span>Pro</h3>
-      <p>For teams running £50-200k/yr. We deploy on your infra. Weekly fine-tune. ~75% savings.</p>
-      <div class="price">£997<span class="per">/mo + £5k setup</span></div>
+      <p>For departmental deployments. Single workstation-class GPU.</p>
       <ul>
-        <li>Qwen2.5-32B on your GPU</li>
+        <li>Qwen2.5-32B</li>
+        <li>24GB VRAM</li>
         <li>Docker compose · your VPC</li>
         <li>Weekly LoRA fine-tune</li>
-        <li>Eval dashboard</li>
-        <li>~75% frontier savings</li>
+        <li>~75% frontier-call reduction</li>
       </ul>
     </div>
 
     <div class="card">
       <h3><span class="glyph">◯</span>Sovereign</h3>
-      <p>For regulated industries · finance, healthcare, legal. They own the hardware. We install + maintain quarterly.</p>
-      <div class="price">£1,997<span class="per">/mo + £15-50k setup</span></div>
+      <p>For regulated industries · finance, healthcare, legal. Server-class hardware.</p>
       <ul>
-        <li>Qwen2.5-72B + custom models</li>
-        <li>Your hardware · we install</li>
+        <li>Qwen2.5-72B</li>
+        <li>48GB VRAM</li>
         <li>Bi-weekly LoRA</li>
         <li>BSV audit anchor</li>
-        <li>SOC2 / HIPAA / GDPR ready</li>
-        <li>~95% frontier savings</li>
+        <li>~95% frontier-call reduction</li>
       </ul>
     </div>
 
     <div class="card">
       <h3><span class="glyph">⬡</span>Enterprise</h3>
-      <p>Multi-region, multi-tenant, custom compliance certifications, white-label.</p>
-      <div class="price">£4,997<span class="per">+/mo · bespoke</span></div>
+      <p>Multi-region, custom certifications, white-label.</p>
       <ul>
         <li>Multi-region failover</li>
         <li>Custom model selection</li>
         <li>Bespoke certifications</li>
         <li>White-label / OEM option</li>
-        <li>24/7 ops</li>
-        <li>~99% frontier savings</li>
+        <li>~99% frontier-call reduction</li>
       </ul>
     </div>
   </div>
 
   <div class="callout">
-    <strong>ROI maths.</strong> Customer burning £100k/yr on Anthropic tokens. Pro tier = £12k/yr software + £5k one-time setup = £17k year 1. Saves £75k year 1. <strong>Payback: 2.7 months.</strong> Year 3, frontier spend is ~£5k, FallCore is still £12k. Total saved over 3 years: ~£253k.
+    <strong>Free during launch.</strong> The source is MIT-licensed. The factory mints branded stacks at <a href="https://sjgant80-hub.github.io/fallcore-factory/" style="color:var(--primary)">FallCore Factory</a> — no card, no commitment. When commercial managed-tier pricing is set, it lives here. Until then: clone, run, ship.
   </div>
 </section>
 

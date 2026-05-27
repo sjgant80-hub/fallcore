@@ -203,18 +203,16 @@ Response headers:
 
 ---
 
-## Pricing tiers (commercial)
+## Tiers (by hardware)
 
-| Tier | Monthly | Setup | Frontier savings | Who runs it |
-|---|---:|---:|---:|---|
-| **Lite** | £297 | £0 | ~40% | We host, dedicated GPU, single-tenant |
-| **Pro** | £997 | £5k | ~75% | We deploy on your infra, weekly LoRA |
-| **Sovereign** | £1,997 | £15-50k | ~95% | You own the hardware, quarterly install |
-| **Enterprise** | £4,997+ | bespoke | ~99% | Multi-region, custom certifications |
+| Tier | Model | VRAM | Frontier-call reduction | Notes |
+|---|---|---|---:|---|
+| **Lite** | Llama-3.1-8B | 8GB | ~40% | Laptops + small teams · CPU also viable |
+| **Pro** | Qwen2.5-32B | 24GB | ~75% | Departmental · weekly LoRA cadence |
+| **Sovereign** | Qwen2.5-72B | 48GB | ~95% | Regulated industries · server-class |
+| **Enterprise** | Qwen2.5-72B | 48GB+ | ~99% | Multi-region · custom certifications |
 
-For a customer burning £100k/yr on Anthropic:
-- Pro tier: £12k/yr software + £5k setup = **£17k year 1**, saves £75k. **Payback 2.7 months.**
-- Year 3: frontier spend dropped to ~£5k. FallCore still £12k. **£253k total saved.**
+**Free during launch.** Open source, MIT-licensed. Forge a branded stack at the [FallCore Factory](https://sjgant80-hub.github.io/fallcore-factory/) — no card, no commitment. Commercial managed-tier pricing will be set once volume + feedback are in.
 
 ---
 
