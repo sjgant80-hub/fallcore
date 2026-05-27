@@ -1,0 +1,87 @@
+# ═══════════════════════════════════════════════════════════════
+# ◊·κ=1 · FallCore stack
+#
+# One command: docker compose up -d
+#
+# Brings up:
+#   · ollama        — local LLM runtime (Qwen2.5-32B by default · swap freely)
+#   · qdrant        — vector DB for RAG (optional but recommended)
+#   · proxy         — Anthropic-API-compatible front-end (port 11434 mapped here)
+#
+# Hardware reqs:
+#   · Qwen2.5-32B  (default) · 24GB VRAM · single 3090/4090/L4 · OR 64GB RAM in CPU-only mode (slow)
+#   · Qwen2.5-72B  (sovereign tier)  · 48GB VRAM · A100/L40S/dual 3090
+#   · Llama-3.1-8B (lite tier)       · 8GB VRAM · any consumer GPU
+#
+# Customise:
+#   cp .env.example .env  → edit OLLAMA_MODEL, ANTHROPIC_FALLBACK_KEY, CONFIDENCE_THRESHOLD
+#   docker compose up -d
+#   docker compose exec ollama ollama pull qwen2.5:32b
+#
+# ═══════════════════════════════════════════════════════════════
+
+version: '3.9'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: fallcore-ollama
+    ports:
+      - "11435:11434"   # Ollama API exposed on host port 11435 (proxy talks to it internally)
+    volumes:
+      - ollama-models:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      - OLLAMA_KEEP_ALIVE=-1                  # keep model resident
+      - OLLAMA_MAX_LOADED_MODELS=2
+    # Uncomment for NVIDIA GPU passthrough:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: fallcore-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant-data:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    restart: unless-stopped
+
+  proxy:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.proxy
+    container_name: fallcore-proxy
+    depends_on:
+      - ollama
+    ports:
+      - "${FALLCORE_PORT:-11434}:11434"   # public-facing API port
+    environment:
+      - PORT=11434
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-qwen2.5:32b}
+      - ANTHROPIC_FALLBACK_KEY=${ANTHROPIC_FALLBACK_KEY:-}
+      - CONFIDENCE_THRESHOLD=${CONFIDENCE_THRESHOLD:-0.6}
+      - LOG_DIR=/data/logs
+    volumes:
+      - proxy-data:/data
+    restart: unless-stopped
+
+volumes:
+  ollama-models:
+  qdrant-data:
+  proxy-data:

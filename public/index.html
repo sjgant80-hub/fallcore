@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FallCore · the on-prem brain that learns from your work</title>
+<meta name="description" content="Sovereign AI infrastructure. Anthropic-API-compatible local proxy + RAG + LoRA fine-tune loop. Reduces frontier-API spend by 75-95% over 12 months. Your data, your model, your hardware.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0c10; --surface:#10131a; --s2:#161a23; --border:#22272f;
+  --text:#cdd3dc; --dim:#7a808c; --bright:#f0f3f7;
+  --primary:#22c55e; --accent:#d4af37; --warn:#c87e3a; --fail:#c84a4a;
+  --ring:rgba(34,197,94,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:'Syne',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;font-size:16px}
+code,pre,.mono{font-family:'DM Mono',ui-monospace,monospace}
+header.top{padding:18px 30px;display:flex;align-items:center;gap:18px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:.02em;font-size:18px;color:var(--bright)}
+.brand .dot{width:11px;height:11px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px var(--ring)}
+.brand .sub{font-size:11px;color:var(--dim);letter-spacing:.18em;text-transform:uppercase;margin-left:6px}
+nav.top-nav{margin-left:auto;display:flex;gap:18px}
+nav.top-nav a{color:var(--dim);text-decoration:none;font-size:14px}
+nav.top-nav a:hover{color:var(--bright)}
+.hero{padding:90px 30px 60px;text-align:center;max-width:920px;margin:0 auto}
+.hero h1{font-size:48px;line-height:1.1;color:var(--bright);font-weight:800;letter-spacing:-.02em;margin-bottom:22px}
+.hero h1 .accent{color:var(--primary)}
+.hero h1 .strike{text-decoration:line-through;text-decoration-color:var(--fail);text-decoration-thickness:3px;color:var(--dim)}
+.hero .lead{font-size:19px;color:var(--text);max-width:680px;margin:0 auto 30px;line-height:1.55}
+.hero .lead strong{color:var(--bright);font-weight:600}
+.hero .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
+.btn{background:var(--primary);color:#000;border:none;padding:13px 22px;border-radius:8px;font:inherit;font-weight:600;font-size:15px;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:hover{filter:brightness(1.05)}
+.btn.ghost{background:transparent;color:var(--bright);border:1px solid var(--border)}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;background:var(--s2);border:1px solid var(--border);color:var(--accent);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px;font-family:'DM Mono',monospace}
+section{padding:70px 30px;max-width:1100px;margin:0 auto}
+section h2{font-size:30px;color:var(--bright);font-weight:700;margin-bottom:14px;letter-spacing:-.01em}
+section h2 .sub{font-size:13px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;display:block;font-weight:400;margin-bottom:8px;font-family:'DM Mono',monospace}
+section .lead{color:var(--text);max-width:740px;font-size:16px;margin-bottom:36px}
+.grid{display:grid;gap:18px}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.grid-2{grid-template-columns:repeat(auto-fit,minmax(360px,1fr))}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px}
+.card h3{font-size:16px;color:var(--bright);font-weight:700;margin-bottom:8px}
+.card h3 .glyph{color:var(--primary);margin-right:8px;font-family:'DM Mono',monospace;font-weight:400}
+.card p{font-size:14px;color:var(--text);line-height:1.6}
+.card .price{font-size:34px;color:var(--bright);font-weight:700;margin:14px 0 4px}
+.card .price .per{font-size:13px;color:var(--dim);font-weight:400}
+.card.featured{border-color:var(--primary);background:linear-gradient(135deg,var(--surface) 0%, rgba(34,197,94,.06) 100%)}
+.card.featured .price{color:var(--primary)}
+.card ul{list-style:none;margin:14px 0 0;padding:0}
+.card ul li{padding:6px 0;font-size:13px;color:var(--text);border-bottom:1px solid var(--border)}
+.card ul li:before{content:"✓";color:var(--primary);margin-right:9px;font-weight:700}
+.card ul li:last-child{border:none}
+.compare{width:100%;border-collapse:collapse;font-size:14px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:14px}
+.compare th{text-align:left;padding:14px 16px;background:var(--s2);color:var(--dim);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-family:'DM Mono',monospace;font-weight:700}
+.compare td{padding:14px 16px;border-top:1px solid var(--border);color:var(--text)}
+.compare td.strong{color:var(--bright);font-weight:600}
+.compare tr:hover td{background:var(--s2)}
+.code{background:#06080c;border:1px solid var(--border);border-radius:10px;padding:18px;font-family:'DM Mono',monospace;font-size:13px;color:#9aa0ac;line-height:1.6;overflow-x:auto}
+.code .cmd{color:var(--primary)}
+.code .comment{color:var(--dim)}
+.code .key{color:var(--accent)}
+.flow{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:14px;gap:14px;flex-wrap:wrap}
+.flow .step-num{width:36px;height:36px;border-radius:50%;background:var(--s2);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-family:'DM Mono',monospace;flex-shrink:0}
+.flow .step-body{flex:1;min-width:200px}
+.flow .step-body strong{display:block;color:var(--bright);margin-bottom:3px}
+.flow .step-body span{font-size:13px;color:var(--dim)}
+.flow .step-result{font-size:12px;color:var(--primary);font-family:'DM Mono',monospace;background:rgba(34,197,94,.08);padding:4px 9px;border-radius:5px;flex-shrink:0}
+footer.bottom{padding:30px;border-top:1px solid var(--border);text-align:center;color:var(--dim);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-family:'DM Mono',monospace}
+footer.bottom a{color:var(--dim);text-decoration:none}
+footer.bottom a:hover{color:var(--bright)}
+.callout{background:var(--surface);border-left:3px solid var(--primary);padding:20px 24px;border-radius:0 10px 10px 0;margin:30px 0;font-size:15px;color:var(--text)}
+.callout strong{color:var(--bright)}
+@media (max-width:680px){
+  .hero h1{font-size:32px}
+  section{padding:50px 22px}
+  section h2{font-size:24px}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <span class="dot"></span>
+    <span>FallCore</span>
+    <span class="sub">on-prem · sovereign</span>
+  </div>
+  <nav class="top-nav">
+    <a href="#how">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#install">Install</a>
+    <a href="https://github.com/sjgant80-hub/fallcore">GitHub</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="badge">◊·κ=1 · the inversion</div>
+  <h1>
+    <span class="strike">Anthropic charges per token.</span><br>
+    FallCore is a flat fee <span class="accent">that gets cheaper</span><br>
+    as your bill collapses.
+  </h1>
+  <p class="lead">
+    The on-prem brain that learns from your work. <strong>Anthropic-API-compatible local proxy</strong> + RAG + LoRA fine-tune loop.
+    Burn £100k/yr on tokens today? In 3 years, your AI bill is <strong>5% of that</strong> — and the model is yours.
+  </p>
+  <div class="ctas">
+    <a class="btn" href="#install">Install on your infra</a>
+    <a class="btn ghost" href="#how">How it works</a>
+  </div>
+</section>
+
+<section id="how">
+  <h2><span class="sub">how it works</span>Same UX. Opposite economics.</h2>
+  <p class="lead">Every Fall* tool — and any app hitting Anthropic's API — points at FallCore instead. The cascade decides per-query: local first, frontier only when truly needed. Every frontier call logged for next week's fine-tune.</p>
+
+  <div class="flow">
+    <div class="step-num">1</div>
+    <div class="step-body"><strong>Customer query</strong><span>App hits <code>POST /v1/messages</code> — same Anthropic shape</span></div>
+    <div class="step-result">~50ms</div>
+  </div>
+  <div class="flow">
+    <div class="step-num">2</div>
+    <div class="step-body"><strong>Local Ollama (Qwen2.5-32B / 72B)</strong><span>Runs on customer's GPU · data never leaves the network</span></div>
+    <div class="step-result">2-8s</div>
+  </div>
+  <div class="flow">
+    <div class="step-num">3</div>
+    <div class="step-body"><strong>Confidence check</strong><span>If local ≥ threshold (default 0.6) → return locally · saved $0.03 · skip step 4</span></div>
+    <div class="step-result">local stays · 75%+ of cases</div>
+  </div>
+  <div class="flow">
+    <div class="step-num">4</div>
+    <div class="step-body"><strong>Frontier fallthrough</strong><span>Only when local genuinely insufficient → real Anthropic with customer's key</span></div>
+    <div class="step-result">~25% initial · drops over time</div>
+  </div>
+  <div class="flow">
+    <div class="step-num">5</div>
+    <div class="step-body"><strong>Log every cascade-fire</strong><span>(prompt · local-answer · frontier-answer) → JSONL → next LoRA cycle</span></div>
+    <div class="step-result">training data accrues</div>
+  </div>
+  <div class="flow">
+    <div class="step-num">6</div>
+    <div class="step-body"><strong>Weekly LoRA fine-tune</strong><span>Train base model on accumulated preference pairs · deploy adapter</span></div>
+    <div class="step-result">local accuracy ↑</div>
+  </div>
+  <div class="flow">
+    <div class="step-num">7</div>
+    <div class="step-body"><strong>Frontier ratio drops</strong><span>Month 1: 25% frontier · Month 6: 8% · Month 12: 3%</span></div>
+    <div class="step-result">£ collapses</div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="sub">why this is different</span>The inversion of every AI vendor's incentive.</h2>
+  <table class="compare">
+    <thead>
+      <tr><th></th><th>Anthropic / OpenAI</th><th>FallCore</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="strong">Where the model runs</td><td>Their servers</td><td>Your hardware</td></tr>
+      <tr><td class="strong">Where your data goes</td><td>To them</td><td>Stays on your network</td></tr>
+      <tr><td class="strong">Pricing model</td><td>Pay per token (scales with usage)</td><td>Flat annual fee (decoupled from usage)</td></tr>
+      <tr><td class="strong">Whose reviewer corrections train the model</td><td>Theirs (you gift them labels)</td><td>Yours (the adapter is your IP)</td></tr>
+      <tr><td class="strong">Compliance posture (HIPAA / GDPR / SOX)</td><td>Customer is liable</td><td>Data never moves → liability collapses</td></tr>
+      <tr><td class="strong">Vendor lock-in</td><td>Total · model owned by them</td><td>None · model + adapter on your disk</td></tr>
+      <tr><td class="strong">If they go out of business</td><td>You stop working</td><td>Nothing changes</td></tr>
+      <tr><td class="strong">Year-3 economics</td><td>Bill grew with usage</td><td>Bill is 5% of year 1</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="pricing">
+  <h2><span class="sub">pricing</span>Four tiers. The customer chooses how much sovereignty.</h2>
+  <p class="lead">Every tier is an Anthropic-API-compatible drop-in. Pick based on hardware preference and required compliance posture. Yearly billing, no per-token charges.</p>
+  <div class="grid grid-3" style="margin-top:30px">
+
+    <div class="card">
+      <h3><span class="glyph">·</span>Lite</h3>
+      <p>For teams running £20-50k/yr on Anthropic. We host on dedicated single-tenant GPU. ~40% savings.</p>
+      <div class="price">£297<span class="per">/mo</span></div>
+      <ul>
+        <li>Llama-3.1-8B (single GPU)</li>
+        <li>We host · dedicated GPU</li>
+        <li>RAG over your docs</li>
+        <li>Monthly fine-tune</li>
+        <li>~40% frontier savings</li>
+      </ul>
+    </div>
+
+    <div class="card featured">
+      <h3><span class="glyph">◊</span>Pro</h3>
+      <p>For teams running £50-200k/yr. We deploy on your infra. Weekly fine-tune. ~75% savings.</p>
+      <div class="price">£997<span class="per">/mo + £5k setup</span></div>
+      <ul>
+        <li>Qwen2.5-32B on your GPU</li>
+        <li>Docker compose · your VPC</li>
+        <li>Weekly LoRA fine-tune</li>
+        <li>Eval dashboard</li>
+        <li>~75% frontier savings</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="glyph">◯</span>Sovereign</h3>
+      <p>For regulated industries · finance, healthcare, legal. They own the hardware. We install + maintain quarterly.</p>
+      <div class="price">£1,997<span class="per">/mo + £15-50k setup</span></div>
+      <ul>
+        <li>Qwen2.5-72B + custom models</li>
+        <li>Your hardware · we install</li>
+        <li>Bi-weekly LoRA</li>
+        <li>BSV audit anchor</li>
+        <li>SOC2 / HIPAA / GDPR ready</li>
+        <li>~95% frontier savings</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><span class="glyph">⬡</span>Enterprise</h3>
+      <p>Multi-region, multi-tenant, custom compliance certifications, white-label.</p>
+      <div class="price">£4,997<span class="per">+/mo · bespoke</span></div>
+      <ul>
+        <li>Multi-region failover</li>
+        <li>Custom model selection</li>
+        <li>Bespoke certifications</li>
+        <li>White-label / OEM option</li>
+        <li>24/7 ops</li>
+        <li>~99% frontier savings</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>ROI maths.</strong> Customer burning £100k/yr on Anthropic tokens. Pro tier = £12k/yr software + £5k one-time setup = £17k year 1. Saves £75k year 1. <strong>Payback: 2.7 months.</strong> Year 3, frontier spend is ~£5k, FallCore is still £12k. Total saved over 3 years: ~£253k.
+  </div>
+</section>
+
+<section id="install">
+  <h2><span class="sub">install</span>One command on your infra.</h2>
+  <p class="lead">Pick a tier, set the .env, <code>docker compose up</code>. The proxy listens on port 11434 (same as Ollama by default). Point your existing Anthropic clients at <code>http://your-host:11434</code> and they Just Work.</p>
+
+  <pre class="code"><span class="comment"># 1 · clone</span>
+<span class="cmd">git clone</span> https://github.com/sjgant80-hub/fallcore
+<span class="cmd">cd</span> fallcore
+
+<span class="comment"># 2 · configure</span>
+<span class="cmd">cp</span> .env.example .env
+<span class="comment">#  edit OLLAMA_MODEL, ANTHROPIC_FALLBACK_KEY, CONFIDENCE_THRESHOLD</span>
+
+<span class="comment"># 3 · bring it up</span>
+<span class="cmd">docker compose up</span> -d
+
+<span class="comment"># 4 · pull the model (one time)</span>
+<span class="cmd">docker compose exec</span> ollama ollama pull qwen2.5:32b
+
+<span class="comment"># 5 · point your Anthropic clients at it</span>
+<span class="key">ANTHROPIC_BASE_URL</span>=http://your-host:11434
+<span class="comment">#  done. existing apps now use local-first cascade.</span>
+
+<span class="comment"># 6 · after a week, run the eval to see your ROI</span>
+<span class="cmd">node</span> eval/replay.js --days 7
+
+<span class="comment"># 7 · extract preference pairs for fine-tune</span>
+<span class="cmd">node</span> train/extract-preferences.js</pre>
+</section>
+
+<section>
+  <h2><span class="sub">what's included</span>Open source, MIT licenced. Yours to inspect, modify, fork.</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3><span class="glyph">⚡</span>Proxy server</h3>
+      <p>Express server, single file. Anthropic-API-shape. OpenAI-shape bonus. Cascade logic + confidence scoring + frontier fallthrough + JSONL logging. No dependencies beyond express + cors.</p>
+    </div>
+    <div class="card">
+      <h3><span class="glyph">🐳</span>Docker stack</h3>
+      <p>Ollama + Qdrant + proxy. One <code>docker compose up</code>. GPU passthrough commented in for NVIDIA. Persistent volumes for models, vectors, and logs.</p>
+    </div>
+    <div class="card">
+      <h3><span class="glyph">📊</span>Eval harness</h3>
+      <p>Replay last 30 days of frontier calls through local · score equivalence · output ROI report. Tells you when to lower the confidence threshold (more local · less spend).</p>
+    </div>
+    <div class="card">
+      <h3><span class="glyph">🎯</span>LoRA pipeline</h3>
+      <p>Extract preference pairs from proxy logs + Fall* reviewer corrections → standard JSONL → train with axolotl / unsloth / TRL DPO. Deploy adapter into Ollama. Repeat weekly.</p>
+    </div>
+    <div class="card">
+      <h3><span class="glyph">🌐</span>Mesh interop</h3>
+      <p>Pairs with the Fall* estate: FallForce CRM · GymOps · Apex Procurement · FallAccount · 30+ sovereign tools all share <code>BroadcastChannel('fallmesh')</code> + <code>fall-kcc</code> + Konomi licence signing.</p>
+    </div>
+    <div class="card">
+      <h3><span class="glyph">⛓</span>BSV audit anchor</h3>
+      <p>Sovereign tier: every fine-tune cycle, every reviewer correction, every model deployment can be anchored on Bitcoin SV via OnlyBrains. Court-defensible audit trail. Nothing phones home.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="sub">the v18 read</span>This isn't a product. It's the proof.</h2>
+  <p class="lead">
+    Anthropic charges by the token. OpenAI charges by the token. Google charges by the token.
+    Every vendor's incentive is for you to use <strong>more</strong>. None of them want you off their platform.
+  </p>
+  <p class="lead">
+    FallCore inverts it. We sell the layer that <strong>reduces your dependence</strong> on those vendors over time.
+    Our growth = your bill shrinking. The model that ships at the end of year 3 is <strong>yours</strong> —
+    trained on your work, fine-tuned by your reviewers, sitting on your hardware.
+    You can fire us and it still works.
+  </p>
+  <p class="lead">
+    This is the first instance of <strong>cognitive sovereignty becoming infrastructure</strong>.
+    Built in 18 months on no capital by one person and his AI in a gaming café in Pattaya.
+    Part of the <a href="https://github.com/sjgant80-hub" style="color:var(--primary)">Fall* estate</a> · 30+ sovereign tools, all open source, all aligned with the same Konomi / KCC architecture.
+  </p>
+  <div class="ctas" style="justify-content:flex-start;margin-top:20px">
+    <a class="btn" href="https://github.com/sjgant80-hub/fallcore">Read the source</a>
+    <a class="btn ghost" href="mailto:simon@ai-nativesolutions.com">Talk to us</a>
+  </div>
+</section>
+
+<footer class="bottom">
+  <div>◊·κ=1 · FallCore · MIT licensed · part of the Fall* estate</div>
+  <div style="margin-top:6px">
+    <a href="https://github.com/sjgant80-hub">Estate</a> ·
+    <a href="https://ai-nativesolutions.com">AI Native Solutions</a> ·
+    <a href="https://github.com/sjgant80-hub/fallcore">Source</a>
+  </div>
+</footer>
+
+</body>
+</html>

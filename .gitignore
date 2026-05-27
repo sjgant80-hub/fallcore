@@ -1,0 +1,9 @@
+node_modules/
+.env
+.admin-key
+.state.json
+logs/
+training-*/
+.annotations/
+*.log
+.DS_Store

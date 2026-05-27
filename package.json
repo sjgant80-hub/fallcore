@@ -1,0 +1,19 @@
+{
+  "name": "fallcore",
+  "version": "0.1.0",
+  "description": "◊·κ=1 · FallCore · the on-prem brain that learns from your work. Anthropic-API-compatible local proxy + RAG + LoRA fine-tune loop. Reduces frontier-API reliance over time.",
+  "main": "proxy/server.js",
+  "scripts": {
+    "start": "node proxy/server.js",
+    "eval": "node eval/replay.js",
+    "extract": "node train/extract-preferences.js"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "express": "^4.21.1",
+    "cors": "^2.8.5"
+  },
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/sjgant80-hub/fallcore" },
+  "keywords": ["llm", "ollama", "anthropic", "proxy", "rag", "lora", "sovereign-ai", "on-prem"]
+}
