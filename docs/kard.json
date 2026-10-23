@@ -1,0 +1,29 @@
+{
+  "kind": "kard.v1",
+  "name": "fallcore",
+  "title": "FallCore",
+  "retires": "a rented model API (a local, API-compatible brain)",
+  "category": "AI you own",
+  "license": "MIT",
+  "live": "https://sjgant80-hub.github.io/fallcore/",
+  "repo": "https://github.com/sjgant80-hub/fallcore",
+  "studs": {
+    "brain": {
+      "how": "inline",
+      "version": "3.1.1"
+    },
+    "mesh": {
+      "device": true,
+      "peer": false
+    },
+    "memory": {
+      "indexeddb": false,
+      "localstorage": true
+    },
+    "proof": {
+      "workflows": 0,
+      "tests": 0
+    }
+  },
+  "fits": false
+}
